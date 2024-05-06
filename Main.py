@@ -18,7 +18,6 @@ app.add_middleware(
 # URL base donde están almacenadas todas las imágenes
 base_url = "https://gutigut.com/FotosWeb"
 
-# Asegurar que la base_url termina con '/'
 if not base_url.endswith('/'):
     base_url += '/'
 
@@ -37,7 +36,6 @@ def parse_directory_index(url):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a')
-        # Asegurarse de que las URLs para carpetas terminan con '/' y son correctas
         folders = [url + (link.get('href') if link.get('href').startswith('/') else '/' + link.get('href')) for link in links if link.get('href').endswith('/') and not link.get('href').startswith('?')]
         images = [url + (link.get('href') if link.get('href').startswith('/') else '/' + link.get('href')) for link in links if not link.get('href').endswith('/') and not link.get('href').startswith('?')]
         return folders, images
