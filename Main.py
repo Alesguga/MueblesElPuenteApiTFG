@@ -36,11 +36,12 @@ def parse_directory_index(url):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a')
-        folders = [url + (link.get('href') if link.get('href').startswith('/') else '/' + link.get('href')) for link in links if link.get('href').endswith('/') and not link.get('href').startswith('?')]
-        images = [url + (link.get('href') if link.get('href').startswith('/') else '/' + link.get('href')) for link in links if not link.get('href').endswith('/') and not link.get('href').startswith('?')]
+        folders = [url.rstrip('/') + '/' + link.get('href').lstrip('/') for link in links if link.get('href').endswith('/') and not link.get('href').startswith('?')]
+        images = [url.rstrip('/') + '/' + link.get('href').lstrip('/') for link in links if not link.get('href').endswith('/') and not link.get('href').startswith('?')]
         return folders, images
     except requests.RequestException:
         raise HTTPException(status_code=404, detail="Unable to retrieve directory listing")
+
 
 @app.get("/folders/{path:path}")
 async def list_folders_and_images(path: str = ""):
