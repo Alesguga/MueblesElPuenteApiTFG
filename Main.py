@@ -25,7 +25,7 @@ if not base_url.endswith('/'):
 @app.get("/")
 async def root():
     return {
-        "Atajos de ayuda de la Api": {
+        "Atajos de ayuda de la Api ": {
             "Sacar las carpetas por categorias": "/folders/{path:path}",
             "Sacar una imagen especifica (Todavia no funciona bien)": "/images/{path:path}/{image_name}",
         }
